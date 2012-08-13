@@ -2,3 +2,4 @@
 hardware/*.b#?
 hardware/*.s#?
 hardware/*.l#?
+hardware/old
