@@ -338,8 +338,8 @@ UsedLibrary="Customs.lbr"
 
 [Win_1]
 Type="Schematic Editor"
-Loc="245 336 844 735"
-State=2
+Loc="320 218 919 617"
+State=0
 Number=2
 File="Face.sch"
 View="-72.4184 -14.9647 783.618 96.1939"
@@ -374,7 +374,6 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
-Views=" 1: -72.4184 -14.9647 783.618 96.1939"
 Sheet=1
 
 [Win_2]
