@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from xml.etree.ElementTree import Element,SubElement,ElementTree,dump
 from xml.etree import ElementTree as ET
 from xml.dom import minidom
