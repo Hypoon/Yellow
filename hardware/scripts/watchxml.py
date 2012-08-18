@@ -62,17 +62,11 @@ def striptextandtail(elem):
 	for i in list(elem):
 		striptextandtail(i)
 
-def addelementoncircle(type,number,value,centerx,centery,radius,angle,rotation,mirrored):
+def addelementoncircle(name,package,value,centerx,centery,radius,angle,rotation,mirrored):
 	j = SubElement(elements,"element")
-	j.set("name",type+str(number))
+	j.set("name",name)
 	j.set("library","Customs")
-	if(type=="LED"):
-		j.set("package","LED-0603")
-	if(type=="H"):
-		if(value=="2X3"):
-			j.set("package","3X2_1MM_SMD")
-		elif(value=="2X2"):
-			j.set("package","2X2_1MM_SMD")
+	j.set("package",package)
 	j.set("value",value)
 	j.set("x",str(centerx+radius*cos(pi/2-angle)))
 	j.set("y",str(centery+radius*sin(pi/2-angle)))
@@ -157,19 +151,19 @@ elements = SubElement(board,"elements")
 ### Elements defined below ###
 
 for i in range(0,60):
-	addelementoncircle("LED",i+1,"RED",ORIGINX,ORIGINY,R1,i*pi/30,((360-i*6)+180*(i%2))%360,False)
+	addelementoncircle("LED"+str(i+1),"LED-0603","RED",ORIGINX,ORIGINY,R1,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,60):
-	addelementoncircle("LED",i+61,"GREEN",ORIGINX,ORIGINY,R2,i*pi/30,((360-i*6)+180*(i%2))%360,False)
+	addelementoncircle("LED"+str(i+61),"LED-0603","GREEN",ORIGINX,ORIGINY,R2,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,60):
-	addelementoncircle("LED",i+121,"BLUE",ORIGINX,ORIGINY,R3,i*pi/30,((360-i*6)+180*(i%2))%360,False)
+	addelementoncircle("LED"+str(i+121),"LED-0603","BLUE",ORIGINX,ORIGINY,R3,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,6):
-	addelementoncircle("H",i+1,"2X3",ORIGINX,ORIGINY,HRI,i*pi/3,i*60,True)
+	addelementoncircle("H"+str(i+1),"3X2_1MM_SMD","2X3",ORIGINX,ORIGINY,HRI,i*pi/3,i*60,True)
 
 for i in range(0,3):
-	addelementoncircle("H",i+7,"2X2",ORIGINX,ORIGINY,HRO,i*2*pi/3,(180+i*120)%360,True)
+	addelementoncircle("H"+str(i+7),"2X2_1MM_SMD","2X2",ORIGINX,ORIGINY,HRO,i*2*pi/3,(180+i*120)%360,True)
 
 ### Elements defined above ###
 
