@@ -75,7 +75,6 @@ def addelementoncircle(name,package,value,radius,angle,rotation,mirrored,centerx
 	j.set("library","Customs")
 	j.set("package",package)
 	j.set("value",value)
-	j.set("x",str(frompolar(centerx,centery,radius,angle,"x")))
 	j.set("x",str(frompolar(radius,angle,"x",centerx,centery)))
 	j.set("y",str(frompolar(radius,angle,"y",centerx,centery)))
 	if(mirrored):
