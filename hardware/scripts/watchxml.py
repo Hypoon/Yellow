@@ -62,6 +62,27 @@ def striptextandtail(elem):
 	for i in list(elem):
 		striptextandtail(i)
 
+def addelementoncircle(type,number,value,centerx,centery,radius,angle,rotation,mirrored):
+	j = SubElement(elements,"element")
+	j.set("name",type+str(number))
+	j.set("library","Customs")
+	if(type=="LED"):
+		j.set("package","LED-0603")
+	if(type=="H"):
+		if(value=="2X3"):
+			j.set("package","3X2_1MM_SMD")
+		elif(value=="2X2"):
+			j.set("package","2X2_1MM_SMD")
+	j.set("value",value)
+	j.set("x",str(centerx+radius*cos(pi/2-angle)))
+	j.set("y",str(centery+radius*sin(pi/2-angle)))
+	if(mirrored):
+		j.set("rot","MR"+str(rotation))
+	else:
+		j.set("rot","R"+str(rotation))
+
+
+
 eagle = Element("eagle")
 eagle.set("version","6.2")
 
@@ -136,54 +157,19 @@ elements = SubElement(board,"elements")
 ### Elements defined below ###
 
 for i in range(0,60):
-	j = SubElement(elements,"element")
-	j.set("name","LED"+str(i+1))
-	j.set("library","Customs")
-	j.set("package","LED-0603")
-	j.set("value","RED")
-	j.set("x",str(ORIGINX+R1*cos((pi/2)-i*pi/30)))
-	j.set("y",str(ORIGINY+R1*sin((pi/2)-i*pi/30)))
-	j.set("rot","R"+str(((360-i*6)+180*(i%2))%360))
+	addelementoncircle("LED",i+1,"RED",ORIGINX,ORIGINY,R1,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,60):
-	j = SubElement(elements,"element")
-	j.set("name","LED"+str(i+61))
-	j.set("library","Customs")
-	j.set("package","LED-0603")
-	j.set("value","GREEN")
-	j.set("x",str(ORIGINX+R2*cos((pi/2)-i*pi/30)))
-	j.set("y",str(ORIGINY+R2*sin((pi/2)-i*pi/30)))
-	j.set("rot","R"+str(((360-i*6)+180*(i%2))%360))
+	addelementoncircle("LED",i+61,"GREEN",ORIGINX,ORIGINY,R2,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,60):
-	j = SubElement(elements,"element")
-	j.set("name","LED"+str(i+121))
-	j.set("library","Customs")
-	j.set("package","LED-0603")
-	j.set("value","BLUE")
-	j.set("x",str(ORIGINX+R3*cos((pi/2)-i*pi/30)))
-	j.set("y",str(ORIGINY+R3*sin((pi/2)-i*pi/30)))
-	j.set("rot","R"+str(((360-i*6)+180*(i%2))%360))
+	addelementoncircle("LED",i+121,"BLUE",ORIGINX,ORIGINY,R3,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,6):
-	j = SubElement(elements,"element")
-	j.set("name","H"+str(i+1))
-	j.set("library","Customs")
-	j.set("package","3X2_1MM_SMD")
-	j.set("value","2X3")
-	j.set("x",str(ORIGINX+HRI*cos((pi/2)-i*pi/3)))
-	j.set("y",str(ORIGINY+HRI*sin((pi/2)-i*pi/3)))
-	j.set("rot","MR"+str(i*60))
+	addelementoncircle("H",i+1,"2X3",ORIGINX,ORIGINY,HRI,i*pi/3,i*60,True)
 
 for i in range(0,3):
-	j = SubElement(elements,"element")
-	j.set("name","H"+str(i+7))
-	j.set("library","Customs")
-	j.set("package","2X2_1MM_SMD")
-	j.set("value","2X2")
-	j.set("x",str(ORIGINX+HRO*cos((pi/2)-i*2*pi/3)))
-	j.set("y",str(ORIGINY+HRO*sin((pi/2)-i*2*pi/3)))
-	j.set("rot","MR"+str((180+i*120)%360))
+	addelementoncircle("H",i+7,"2X2",ORIGINX,ORIGINY,HRO,i*2*pi/3,(180+i*120)%360,True)
 
 ### Elements defined above ###
 
