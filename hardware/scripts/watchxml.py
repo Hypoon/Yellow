@@ -62,18 +62,26 @@ def striptextandtail(elem):
 	for i in list(elem):
 		striptextandtail(i)
 
+def frompolar(centerx,centery,radius,angle,coord):
+	if(coord=="x"):
+		return centerx+radius*cos(pi/2-angle)
+	if(coord=="y"):
+		return centery+radius*sin(pi/2-angle)
+	
+
 def addelementoncircle(name,package,value,centerx,centery,radius,angle,rotation,mirrored):
 	j = SubElement(elements,"element")
 	j.set("name",name)
 	j.set("library","Customs")
 	j.set("package",package)
 	j.set("value",value)
-	j.set("x",str(centerx+radius*cos(pi/2-angle)))
-	j.set("y",str(centery+radius*sin(pi/2-angle)))
+	j.set("x",str(frompolar(centerx,centery,radius,angle,"x")))
+	j.set("y",str(frompolar(centerx,centery,radius,angle,"y")))
 	if(mirrored):
 		j.set("rot","MR"+str(rotation))
 	else:
 		j.set("rot","R"+str(rotation))
+
 
 
 
