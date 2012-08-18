@@ -62,21 +62,22 @@ def striptextandtail(elem):
 	for i in list(elem):
 		striptextandtail(i)
 
-def frompolar(centerx,centery,radius,angle,coord):
+def frompolar(radius,angle,coord,centerx = ORIGINX,centery = ORIGINY):
 	if(coord=="x"):
 		return centerx+radius*cos(pi/2-angle)
 	if(coord=="y"):
 		return centery+radius*sin(pi/2-angle)
 	
 
-def addelementoncircle(name,package,value,centerx,centery,radius,angle,rotation,mirrored):
+def addelementoncircle(name,package,value,radius,angle,rotation,mirrored,centerx = ORIGINX,centery = ORIGINY):
 	j = SubElement(elements,"element")
 	j.set("name",name)
 	j.set("library","Customs")
 	j.set("package",package)
 	j.set("value",value)
 	j.set("x",str(frompolar(centerx,centery,radius,angle,"x")))
-	j.set("y",str(frompolar(centerx,centery,radius,angle,"y")))
+	j.set("x",str(frompolar(radius,angle,"x",centerx,centery)))
+	j.set("y",str(frompolar(radius,angle,"y",centerx,centery)))
 	if(mirrored):
 		j.set("rot","MR"+str(rotation))
 	else:
@@ -159,19 +160,19 @@ elements = SubElement(board,"elements")
 ### Elements defined below ###
 
 for i in range(0,60):
-	addelementoncircle("LED"+str(i+1),"LED-0603","RED",ORIGINX,ORIGINY,R1,i*pi/30,((360-i*6)+180*(i%2))%360,False)
+	addelementoncircle("LED"+str(i+1),"LED-0603","RED",R1,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,60):
-	addelementoncircle("LED"+str(i+61),"LED-0603","GREEN",ORIGINX,ORIGINY,R2,i*pi/30,((360-i*6)+180*(i%2))%360,False)
+	addelementoncircle("LED"+str(i+61),"LED-0603","GREEN",R2,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,60):
-	addelementoncircle("LED"+str(i+121),"LED-0603","BLUE",ORIGINX,ORIGINY,R3,i*pi/30,((360-i*6)+180*(i%2))%360,False)
+	addelementoncircle("LED"+str(i+121),"LED-0603","BLUE",R3,i*pi/30,((360-i*6)+180*(i%2))%360,False)
 
 for i in range(0,6):
-	addelementoncircle("H"+str(i+1),"3X2_1MM_SMD","2X3",ORIGINX,ORIGINY,HRI,i*pi/3,i*60,True)
+	addelementoncircle("H"+str(i+1),"3X2_1MM_SMD","2X3",HRI,i*pi/3,i*60,True)
 
 for i in range(0,3):
-	addelementoncircle("H"+str(i+7),"2X2_1MM_SMD","2X2",ORIGINX,ORIGINY,HRO,i*2*pi/3,(180+i*120)%360,True)
+	addelementoncircle("H"+str(i+7),"2X2_1MM_SMD","2X2",HRO,i*2*pi/3,(180+i*120)%360,True)
 
 ### Elements defined above ###
 
