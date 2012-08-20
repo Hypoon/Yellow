@@ -86,6 +86,72 @@ def elementring(prefix,countoffset,count,package,value,radius,rotoffset,altrot,m
 	for i in range(count):
 		addelementoncircle(prefix+str(i+countoffset+1),package,value,radius,i*(2*pi)/count,(rotoffset-i*(360/count)+2*i*(360/count)*mirrored+180*(i%2)*(altrot))%360,mirrored)
 
+def ledring(countoffset,count,signalcountoffset,value,radius,outerviaspace,innerviaspace,alt,centerx = ORIGINX,centery = ORIGINY):
+	elementring("LED",countoffset,count,"LED-0603",value,radius,0,True,False,centerx,centery)
+	for i in range(0,count/2):
+		j1 = SubElement(signals,"signal")
+		j1.set("name","N$"+str(i+1+signalcountoffset))
+		k1 = SubElement(j1,"contactref")
+		k1.set("element","LED"+str(2*i+1+alt+countoffset))
+		k1.set("pad",chr(65+2*alt))
+		l1 = SubElement(j1,"via")
+		l1.set("x",str(frompolar(radius-innerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"x")))
+		l1.set("y",str(frompolar(radius-innerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"y")))
+		l1.set("extent","1-16")
+		l1.set("drill","0.635")
+		m1 = SubElement(j1,"contactref")
+		m1.set("element","LED"+str((2*i+1+alt)%count+1+countoffset))
+		m1.set("pad",chr(67-2*alt))
+		
+		n1 = SubElement(j1,"wire")
+		n1.set("x1",str(frompolar((radius-0.75),2*i*(2*pi/count)+alt*(2*pi/count),"x")))
+		n1.set("y1",str(frompolar((radius-0.75),2*i*(2*pi/count)+alt*(2*pi/count),"y")))
+		n1.set("x2",str(frompolar(radius-innerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"x")))
+		n1.set("y2",str(frompolar(radius-innerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"y")))
+		n1.set("width","0.4064")
+		n1.set("layer","1")
+		
+		o1 = SubElement(j1,"wire")
+		o1.set("x1",str(frompolar(radius-0.75,(2*i+1)*(2*pi/count)+alt*(2*pi/count),"x")))
+		o1.set("y1",str(frompolar(radius-0.75,(2*i+1)*(2*pi/count)+alt*(2*pi/count),"y")))
+		o1.set("x2",str(frompolar(radius-innerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"x")))
+		o1.set("y2",str(frompolar(radius-innerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"y")))
+		o1.set("width","0.4064")
+		o1.set("layer","1")
+
+def ledring2(countoffset,count,signalcountoffset,value,radius,outerviaspace,innerviaspace,alt,centerx = ORIGINX,centery = ORIGINY):
+	for i in range(0,count/2):
+		j2 = SubElement(signals,"signal")
+		j2.set("name","N$"+str(i+1+signalcountoffset+3*count/2))
+		k2 = SubElement(j2,"contactref")
+		k2.set("element","LED"+str(2*i+1+alt+countoffset))
+		k2.set("pad",chr(67-2*alt))
+		l2 = SubElement(j2,"via")
+		l2.set("x",str(frompolar(radius+outerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"x")))
+		l2.set("y",str(frompolar(radius+outerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"y")))
+		l2.set("extent","1-16")
+		l2.set("drill","0.635")
+		m2 = SubElement(j2,"contactref")
+		m2.set("element","LED"+str((2*i+1+alt)%count+1+countoffset))
+		m2.set("pad",chr(65+2*alt))
+		
+		n2 = SubElement(j2,"wire")
+		n2.set("x1",str(frompolar((radius+0.75),2*i*(2*pi/count)+alt*(2*pi/count),"x")))
+		n2.set("y1",str(frompolar((radius+0.75),2*i*(2*pi/count)+alt*(2*pi/count),"y")))
+		n2.set("x2",str(frompolar(radius+outerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"x")))
+		n2.set("y2",str(frompolar(radius+outerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"y")))
+		n2.set("width","0.4064")
+		n2.set("layer","1")
+		
+		o2 = SubElement(j2,"wire")
+		o2.set("x1",str(frompolar(radius+0.75,(2*i+1)*(2*pi/count)+alt*(2*pi/count),"x")))
+		o2.set("y1",str(frompolar(radius+0.75,(2*i+1)*(2*pi/count)+alt*(2*pi/count),"y")))
+		o2.set("x2",str(frompolar(radius+outerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"x")))
+		o2.set("y2",str(frompolar(radius+outerviaspace,2*i*(2*pi/count)+pi/count+alt*(2*pi/count),"y")))
+		o2.set("width","0.4064")
+		o2.set("layer","1")
+
+
 
 
 eagle = Element("eagle")
@@ -158,212 +224,21 @@ striptextandtail(autorouter)
 board.append(autorouter)
 
 elements = SubElement(board,"elements")
+signals = SubElement(board,"signals")
 
-### Elements defined below ###
+### Board design starts here ###
 
-elementring("LED",0,60,"LED-0603","RED",R1,0,True,False)
-elementring("LED",60,60,"LED-0603","GREEN",R2,0,True,False)
-elementring("LED",120,60,"LED-0603","BLUE",R3,0,True,False)
+ledring(0,60,0,"RED",R1,(R2-R1)/2,(R1-R0)/2,False)
+ledring(60,60,30,"GREEN",R2,(R3-R2)/2,(R2-R1)/2,True)
+ledring(120,60,60,"BLUE",R3,(R4-R3)/2,(R3-R2)/2,False)
+ledring2(0,60,0,"RED",R1,(R2-R1)/2,(R1-R0)/2,False)
+ledring2(60,60,30,"GREEN",R2,(R3-R2)/2,(R2-R1)/2,True)
+ledring2(120,60,60,"BLUE",R3,(R4-R3)/2,(R3-R2)/2,False)
+
 elementring("H",0,6,"3X2_1MM_SMD","2X3",HRI,0,False,True)
 elementring("H",6,3,"2X2_1MM_SMD","2X2",HRO,180,False,True)
 
-### Elements defined above ###
-
-### Signals defined below ###
-
-signals = SubElement(board,"signals")
-
-for i in range(0,30):
-	j = SubElement(signals,"signal")
-	j.set("name","N$"+str(i+1))
-	k = SubElement(j,"contactref")
-	k.set("element","LED"+str(2*i+1))
-	k.set("pad","A")
-	l = SubElement(j,"via")
-	l.set("x",str(frompolar((R0+R1)/2,2*i*pi/30+pi/60,"x")))
-	l.set("y",str(frompolar((R0+R1)/2,2*i*pi/30+pi/60,"y")))
-	l.set("extent","1-16")
-	l.set("drill","0.635")
-	m = SubElement(j,"contactref")
-	m.set("element","LED"+str(2*i+2))
-	m.set("pad","C")
-	
-	n = SubElement(j,"wire")
-	n.set("x1",str(frompolar((R1-0.75),2*i*pi/30,"x")))
-	n.set("y1",str(frompolar((R1-0.75),2*i*pi/30,"y")))
-	n.set("x2",str(frompolar((R0+R1)/2,2*i*pi/30+pi/60,"x")))
-	n.set("y2",str(frompolar((R0+R1)/2,2*i*pi/30+pi/60,"y")))
-	n.set("width","0.4064")
-	n.set("layer","1")
-	
-	o = SubElement(j,"wire")
-	o.set("x1",str(frompolar(R1-0.75,(2*i+1)*pi/30,"x")))
-	o.set("y1",str(frompolar(R1-0.75,(2*i+1)*pi/30,"y")))
-	o.set("x2",str(frompolar((R0+R1)/2,2*i*pi/30+pi/60,"x")))
-	o.set("y2",str(frompolar((R0+R1)/2,2*i*pi/30+pi/60,"y")))
-	o.set("width","0.4064")
-	o.set("layer","1")
-
-for i in range(0,30):
-	j = SubElement(signals,"signal")
-	j.set("name","N$"+str(i+31))
-	k = SubElement(j,"contactref")
-	k.set("element","LED"+str(2*i+62))
-	k.set("pad","C")
-	l = SubElement(j,"via")
-	l.set("x",str(frompolar((R1+R2)/2,2*i*pi/30+pi/30+pi/60,"x")))
-	l.set("y",str(frompolar((R1+R2)/2,2*i*pi/30+pi/30+pi/60,"y")))
-	l.set("extent","1-16")
-	l.set("drill","0.635")
-	m = SubElement(j,"contactref")
-	m.set("element","LED"+str((2*i+3)%60+60))
-	m.set("pad","A")
-	
-	n = SubElement(j,"wire")
-	n.set("x1",str(frompolar(R2-0.75,(2*i+1)*pi/30,"x")))
-	n.set("y1",str(frompolar(R2-0.75,(2*i+1)*pi/30,"y")))
-	n.set("x2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/30+pi/60,"x")))
-	n.set("y2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/30+pi/60,"y")))
-	n.set("width","0.4064")
-	n.set("layer","1")
-	
-	o = SubElement(j,"wire")
-	o.set("x1",str(frompolar(R2-0.75,(2*i+2)*pi/30,"x")))
-	o.set("y1",str(frompolar(R2-0.75,(2*i+2)*pi/30,"y")))
-	o.set("x2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/30+pi/60,"x")))
-	o.set("y2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/30+pi/60,"y")))
-	o.set("width","0.4064")
-	o.set("layer","1")
-
-
-for i in range(0,30):
-	j = SubElement(signals,"signal")
-	j.set("name","N$"+str(i+61))
-	k = SubElement(j,"contactref")
-	k.set("element","LED"+str(2*i+121))
-	k.set("pad","A")
-	l = SubElement(j,"via")
-	l.set("x",str(frompolar((R2+R3)/2,2*i*pi/30+pi/60,"x")))
-	l.set("y",str(frompolar((R2+R3)/2,2*i*pi/30+pi/60,"y")))
-	l.set("extent","1-16")
-	l.set("drill","0.635")
-	m = SubElement(j,"contactref")
-	m.set("element","LED"+str(2*i+122))
-	m.set("pad","C")
-	
-	n = SubElement(j,"wire")
-	n.set("x1",str(frompolar(R3-0.75,2*i*pi/30,"x")))
-	n.set("y1",str(frompolar(R3-0.75,2*i*pi/30,"y")))
-	n.set("x2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/60,"x")))
-	n.set("y2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/60,"y")))
-	n.set("width","0.4064")
-	n.set("layer","1")
-	
-	o = SubElement(j,"wire")
-	o.set("x1",str(frompolar(R3-0.75,(2*i+1)*pi/30,"x")))
-	o.set("y1",str(frompolar(R3-0.75,(2*i+1)*pi/30,"y")))
-	o.set("x2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/60,"x")))
-	o.set("y2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/60,"y")))
-	o.set("width","0.4064")
-	o.set("layer","1")
-
-
-for i in range(0,30):
-	j = SubElement(signals,"signal")
-	j.set("name","N$"+str(i+91))
-	k = SubElement(j,"contactref")
-	k.set("element","LED"+str(2*i+1))
-	k.set("pad","C")
-	l = SubElement(j,"via")
-	l.set("x",str(frompolar((R1+R2)/2,2*i*pi/30+pi/60,"x")))
-	l.set("y",str(frompolar((R1+R2)/2,2*i*pi/30+pi/60,"y")))
-	l.set("extent","1-16")
-	l.set("drill","0.635")
-	m = SubElement(j,"contactref")
-	m.set("element","LED"+str(2*i+2))
-	m.set("pad","A")
-	
-	n = SubElement(j,"wire")
-	n.set("x1",str(frompolar(R1+0.75,2*i*pi/30,"x")))
-	n.set("y1",str(frompolar(R1+0.75,2*i*pi/30,"y")))
-	n.set("x2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/60,"x")))
-	n.set("y2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/60,"y")))
-	n.set("width","0.4064")
-	n.set("layer","1")
-	
-	o = SubElement(j,"wire")
-	o.set("x1",str(frompolar(R1+0.75,(2*i+1)*pi/30,"x")))
-	o.set("y1",str(frompolar(R1+0.75,(2*i+1)*pi/30,"y")))
-	o.set("x2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/60,"x")))
-	o.set("y2",str(frompolar((R1+R2)/2,2*i*pi/30+pi/60,"y")))
-	o.set("width","0.4064")
-	o.set("layer","1")
-
-for i in range(0,30):
-	j = SubElement(signals,"signal")
-	j.set("name","N$"+str(i+121))
-	k = SubElement(j,"contactref")
-	k.set("element","LED"+str(2*i+62))
-	k.set("pad","A")
-	l = SubElement(j,"via")
-	l.set("x",str(frompolar((R2+R3)/2,2*i*pi/30+pi/30+pi/60,"x")))
-	l.set("y",str(frompolar((R2+R3)/2,2*i*pi/30+pi/30+pi/60,"y")))
-	l.set("extent","1-16")
-	l.set("drill","0.635")
-	m = SubElement(j,"contactref")
-	m.set("element","LED"+str((2*i+3)%60+60))
-	m.set("pad","C")
-	
-	n = SubElement(j,"wire")
-	n.set("x1",str(frompolar(R2+0.75,(2*i+1)*pi/30,"x")))
-	n.set("y1",str(frompolar(R2+0.75,(2*i+1)*pi/30,"y")))
-	n.set("x2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/30+pi/60,"x")))
-	n.set("y2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/30+pi/60,"y")))
-	n.set("width","0.4064")
-	n.set("layer","1")
-	
-	o = SubElement(j,"wire")
-	o.set("x1",str(frompolar(R2+0.75,(2*i+2)*pi/30,"x")))
-	o.set("y1",str(frompolar(R2+0.75,(2*i+2)*pi/30,"y")))
-	o.set("x2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/30+pi/60,"x")))
-	o.set("y2",str(frompolar((R2+R3)/2,2*i*pi/30+pi/30+pi/60,"y")))
-	o.set("width","0.4064")
-	o.set("layer","1")
-
-for i in range(0,30):
-	j = SubElement(signals,"signal")
-	j.set("name","N$"+str(i+151))
-	k = SubElement(j,"contactref")
-	k.set("element","LED"+str(2*i+121))
-	k.set("pad","C")
-	l = SubElement(j,"via")
-	l.set("x",str(frompolar((R3+R4)/2,2*i*pi/30+pi/60,"x")))
-	l.set("y",str(frompolar((R3+R4)/2,2*i*pi/30+pi/60,"y")))
-	l.set("extent","1-16")
-	l.set("drill","0.635")
-	m = SubElement(j,"contactref")
-	m.set("element","LED"+str(2*i+122))
-	m.set("pad","A")
-	
-	n = SubElement(j,"wire")
-	n.set("x1",str(frompolar(R3+0.75,2*i*pi/30,"x")))
-	n.set("y1",str(frompolar(R3+0.75,2*i*pi/30,"y")))
-	n.set("x2",str(frompolar((R3+R4)/2,2*i*pi/30+pi/60,"x")))
-	n.set("y2",str(frompolar((R3+R4)/2,2*i*pi/30+pi/60,"y")))
-	n.set("width","0.4064")
-	n.set("layer","1")
-	
-	o = SubElement(j,"wire")
-	o.set("x1",str(frompolar(R3+0.75,(2*i+1)*pi/30,"x")))
-	o.set("y1",str(frompolar(R3+0.75,(2*i+1)*pi/30,"y")))
-	o.set("x2",str(frompolar((R3+R4)/2,2*i*pi/30+pi/60,"x")))
-	o.set("y2",str(frompolar((R3+R4)/2,2*i*pi/30+pi/60,"y")))
-	o.set("width","0.4064")
-	o.set("layer","1")
-
-
-
-### Signals defined above ###
+### Board design ends here ###
 
 f = open('output.brd', 'w')
 f.write(prettify(eagle))
