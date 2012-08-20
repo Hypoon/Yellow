@@ -82,9 +82,9 @@ def addelementoncircle(name,package,value,radius,angle,rotation,mirrored,centerx
 	else:
 		j.set("rot","R"+str(rotation))
 
-def elementring(prefix,offset,count,package,value,radius,offsetrot,altrot,mirrored,centerx = ORIGINX,centery = ORIGINY):
+def elementring(prefix,countoffset,count,package,value,radius,rotoffset,altrot,mirrored,centerx = ORIGINX,centery = ORIGINY):
 	for i in range(count):
-		addelementoncircle(prefix+str(i+offset+1),package,value,radius,i*(2*pi)/count,(offsetrot-i*(360/count)+2*i*(360/count)*mirrored+180*(i%2)*(altrot))%360,mirrored)
+		addelementoncircle(prefix+str(i+countoffset+1),package,value,radius,i*(2*pi)/count,(rotoffset-i*(360/count)+2*i*(360/count)*mirrored+180*(i%2)*(altrot))%360,mirrored)
 
 
 
@@ -162,13 +162,9 @@ elements = SubElement(board,"elements")
 ### Elements defined below ###
 
 elementring("LED",0,60,"LED-0603","RED",R1,0,True,False)
-
 elementring("LED",60,60,"LED-0603","GREEN",R2,0,True,False)
-
 elementring("LED",120,60,"LED-0603","BLUE",R3,0,True,False)
-
 elementring("H",0,6,"3X2_1MM_SMD","2X3",HRI,0,False,True)
-
 elementring("H",6,3,"2X2_1MM_SMD","2X2",HRO,180,False,True)
 
 ### Elements defined above ###

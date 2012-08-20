@@ -3,3 +3,4 @@ hardware/*.b#?
 hardware/*.s#?
 hardware/*.l#?
 hardware/old
+hardware/eagle.epf
