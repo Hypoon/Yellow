@@ -11,16 +11,15 @@ DIAMETER = 2.05*25.4
 ORIGINX=1.5*25.4
 ORIGINY=1.5*25.4
 
-# Imaginary innermost ring of LEDs
-R0=0.35*25.4
+ringspacing=0.15*25.4
 # Inside ring of LEDs
 R1=0.5*25.4
 # Middle ring of LEDs
-R2=0.65*25.4
+R2=R1+ringspacing
 # Outside ring of LEDs
-R3=0.8*25.4
-# Imaginary outermost ring of LEDs
-R4=0.95*25.4
+R3=R2+ringspacing
+
+VIASPACE = 0.075*25.4
 
 # Inside ring of connectors
 HRI = 0.325*25.4
@@ -86,7 +85,7 @@ def elementring(prefix,countoffset,count,package,value,radius,rotoffset,altrot,m
 	for i in range(count):
 		addelementoncircle(prefix+str(i+countoffset+1),package,value,radius,i*(2*pi)/count,(rotoffset-i*(360/count)+2*i*(360/count)*mirrored+180*(i%2)*(altrot))%360,mirrored)
 
-def ledring(countoffset,count,signalcountoffset,value,radius,outerviaspace,innerviaspace,alt,centerx = ORIGINX,centery = ORIGINY):
+def ledring(countoffset,count,signalcountoffset,value,radius,alt,innerviaspace = VIASPACE,outerviaspace = VIASPACE,centerx = ORIGINX,centery = ORIGINY):
 	elementring("LED",countoffset,count,"LED-0603",value,radius,0,True,False,centerx,centery)
 	for i in range(0,count/2):
 		j1 = SubElement(signals,"signal")
@@ -119,7 +118,7 @@ def ledring(countoffset,count,signalcountoffset,value,radius,outerviaspace,inner
 		o1.set("width","0.4064")
 		o1.set("layer","1")
 
-def ledring2(countoffset,count,signalcountoffset,value,radius,outerviaspace,innerviaspace,alt,centerx = ORIGINX,centery = ORIGINY):
+def ledring2(countoffset,count,signalcountoffset,value,radius,alt,innerviaspace = VIASPACE,outerviaspace = VIASPACE,centerx = ORIGINX,centery = ORIGINY):
 	for i in range(0,count/2):
 		j2 = SubElement(signals,"signal")
 		j2.set("name","N$"+str(i+1+signalcountoffset+3*count/2))
@@ -228,12 +227,12 @@ signals = SubElement(board,"signals")
 
 ### Board design starts here ###
 
-ledring(0,60,0,"RED",R1,(R2-R1)/2,(R1-R0)/2,False)
-ledring(60,60,30,"GREEN",R2,(R3-R2)/2,(R2-R1)/2,True)
-ledring(120,60,60,"BLUE",R3,(R4-R3)/2,(R3-R2)/2,False)
-ledring2(0,60,0,"RED",R1,(R2-R1)/2,(R1-R0)/2,False)
-ledring2(60,60,30,"GREEN",R2,(R3-R2)/2,(R2-R1)/2,True)
-ledring2(120,60,60,"BLUE",R3,(R4-R3)/2,(R3-R2)/2,False)
+ledring(0,60,0,"RED",R1,False)
+ledring(60,60,30,"GREEN",R2,True)
+ledring(120,60,60,"BLUE",R3,False)
+ledring2(0,60,0,"RED",R1,False)
+ledring2(60,60,30,"GREEN",R2,True)
+ledring2(120,60,60,"BLUE",R3,False)
 
 elementring("H",0,6,"3X2_1MM_SMD","2X3",HRI,0,False,True)
 elementring("H",6,3,"2X2_1MM_SMD","2X2",HRO,180,False,True)
