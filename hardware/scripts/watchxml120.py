@@ -6,25 +6,32 @@ from xml.dom import minidom
 from math import cos,sin,tan,atan,asin,acos,pi
 
 # Diameter of PCB
-DIAMETER = 70.332
+DIAMETER = 50.8
 # Location of center of PCB
 ORIGINX=1.5*25.4
 ORIGINY=1.5*25.4
 
-ringspacing=0.17*25.4
+ringspacing=0.149*25.4
 # Inside ring of LEDs
-R1=0.8*25.4
+R1=14.147142305690299
 # Middle ring of LEDs
 R2=R1+ringspacing
 # Outside ring of LEDs
 R3=R2+ringspacing
 
-VIASPACE = 2.4
+VIASPACE = 1.4325
+R1INNERVIASPACE = VIASPACE
+R1OUTERVIASPACE = VIASPACE
+R2INNERVIASPACE = VIASPACE
+R2OUTERVIASPACE = VIASPACE
+R3INNERVIASPACE = VIASPACE
+R3OUTERVIASPACE = 2.14
+
 
 # Inside ring of connectors
-HRI = 15.38
+HRI = 10.174642305690299
 # Outside ring of connectors
-HRO = 32.9435
+HRO = 22
 ### NOTE: above value is provided in MILLIMETERS, and therefore does not have the multiplication by 25.4 ###
 
 
@@ -86,7 +93,7 @@ def elementring(prefix,countoffset,count,package,value,radius,rotoffset,altrot,m
 		addelementoncircle(prefix+str(i+countoffset+1),package,value,radius,i*(2*pi)/count,(rotoffset-i*(360/count)+2*i*(360/count)*mirrored+180*(i%2)*(altrot))%360,mirrored)
 
 def ledring(countoffset,count,signalcountoffset,value,radius,alt,innerviaspace = VIASPACE,outerviaspace = VIASPACE,centerx = ORIGINX,centery = ORIGINY):
-	elementring("LED",countoffset,count,"LED-0603",value,radius,0,True,False,centerx,centery)
+	elementring("LED",countoffset,count,"LED-0402",value,radius,0,True,False,centerx,centery)
 	for i in range(0,count/2):
 		j1 = SubElement(signals,"signal")
 		j1.set("name","N$"+str(i+1+signalcountoffset))
@@ -227,18 +234,19 @@ signals = SubElement(board,"signals")
 
 ### Board design starts here ###
 
-ledring(0,120,0,"RED",R1,False)
-ledring(120,120,60,"GREEN",R2,True)
-ledring(240,120,120,"BLUE",R3,False)
-ledring2(0,120,0,"RED",R1,False)
-ledring2(120,120,60,"GREEN",R2,True)
-ledring2(240,120,120,"BLUE",R3,False)
+ledring(0,120,0,"RED",R1,False,R1INNERVIASPACE,R1OUTERVIASPACE)
+ledring(120,120,60,"GREEN",R2,True,R2INNERVIASPACE,R2OUTERVIASPACE)
+ledring(240,120,120,"BLUE",R3,False,R3INNERVIASPACE,R3OUTERVIASPACE)
+ledring2(0,120,0,"RED",R1,False,R1INNERVIASPACE,R1OUTERVIASPACE)
+ledring2(120,120,60,"GREEN",R2,True,R2INNERVIASPACE,R2OUTERVIASPACE)
+ledring2(240,120,120,"BLUE",R3,False,R3INNERVIASPACE,R3OUTERVIASPACE)
 
-elementring("H",0,12,"3X2_1MM_SMD","2X3",HRI,0,False,True)
+elementring("H",0,6,"3X2_1MM_SMD","2X3",HRI,0,False,True)
+elementring("H",6,6,"3X2_1MM_SMD","2X3",HRI-3,0,False,True)
 elementring("H",12,6,"2X2_1MM_SMD","2X2",HRO,180,False,True)
 
 ### Board design ends here ###
 
-f = open('output120.brd', 'w')
+f = open('output120b.brd', 'w')
 f.write(prettify(eagle))
 f.close()
