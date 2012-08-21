@@ -96,7 +96,7 @@ def ledring(countoffset,count,signalcountoffset,value,radius,alt,innerviaspace =
 	elementring("LED",countoffset,count,"LED-0402",value,radius,0,True,False,centerx,centery)
 	for i in range(0,count/2):
 		j1 = SubElement(signals,"signal")
-		j1.set("name","N$"+str(i+1+signalcountoffset))
+		j1.set("name","N$"+str(2*i+1+signalcountoffset))
 		k1 = SubElement(j1,"contactref")
 		k1.set("element","LED"+str(2*i+1+alt+countoffset))
 		k1.set("pad",chr(65+2*alt))
@@ -125,10 +125,8 @@ def ledring(countoffset,count,signalcountoffset,value,radius,alt,innerviaspace =
 		o1.set("width","0.4064")
 		o1.set("layer","1")
 
-def ledring2(countoffset,count,signalcountoffset,value,radius,alt,innerviaspace = VIASPACE,outerviaspace = VIASPACE,centerx = ORIGINX,centery = ORIGINY):
-	for i in range(0,count/2):
 		j2 = SubElement(signals,"signal")
-		j2.set("name","N$"+str(i+1+signalcountoffset+3*count/2))
+		j2.set("name","N$"+str(2*i+2+signalcountoffset))
 		k2 = SubElement(j2,"contactref")
 		k2.set("element","LED"+str(2*i+1+alt+countoffset))
 		k2.set("pad",chr(67-2*alt))
@@ -235,11 +233,8 @@ signals = SubElement(board,"signals")
 ### Board design starts here ###
 
 ledring(0,120,0,"RED",R1,False,R1INNERVIASPACE,R1OUTERVIASPACE)
-ledring(120,120,60,"GREEN",R2,True,R2INNERVIASPACE,R2OUTERVIASPACE)
-ledring(240,120,120,"BLUE",R3,False,R3INNERVIASPACE,R3OUTERVIASPACE)
-ledring2(0,120,0,"RED",R1,False,R1INNERVIASPACE,R1OUTERVIASPACE)
-ledring2(120,120,60,"GREEN",R2,True,R2INNERVIASPACE,R2OUTERVIASPACE)
-ledring2(240,120,120,"BLUE",R3,False,R3INNERVIASPACE,R3OUTERVIASPACE)
+ledring(120,120,120,"GREEN",R2,True,R2INNERVIASPACE,R2OUTERVIASPACE)
+ledring(240,120,240,"BLUE",R3,False,R3INNERVIASPACE,R3OUTERVIASPACE)
 
 elementring("H",0,6,"3X2_1MM_SMD","2X3",HRI,0,False,True)
 elementring("H",6,6,"3X2_1MM_SMD","2X3",HRI-3,0,False,True)
@@ -247,6 +242,6 @@ elementring("H",12,6,"2X2_1MM_SMD","2X2",HRO,180,False,True)
 
 ### Board design ends here ###
 
-f = open('output120b.brd', 'w')
+f = open('output120.brd', 'w')
 f.write(prettify(eagle))
 f.close()
