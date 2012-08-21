@@ -105,6 +105,14 @@
 <text x="-0.6985" y="-0.889" size="0.4064" layer="25" rot="R90">&gt;NAME</text>
 <text x="1.0795" y="-1.016" size="0.4064" layer="27" rot="R90">&gt;VALUE</text>
 </package>
+<package name="LED-0402">
+<smd name="C" x="0" y="0.46875" dx="0.5" dy="0.5" layer="1"/>
+<smd name="A" x="0" y="-0.46875" dx="0.5" dy="0.5" layer="1"/>
+<text x="-0.4365625" y="-0.889" size="0.4064" layer="25" rot="R90">&gt;NAME</text>
+<text x="0.4206875" y="-1.016" size="0.4064" layer="27" rot="R90" align="top-left">&gt;VALUE</text>
+<wire x1="-0.238125" y1="-0.079375" x2="0" y2="0.079375" width="0.2032" layer="21"/>
+<wire x1="0" y1="0.079375" x2="0.238125" y2="-0.079375" width="0.2032" layer="21"/>
+</package>
 </packages>
 <symbols>
 <symbol name="MALE_3X2_SMD">
@@ -204,6 +212,15 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 </gates>
 <devices>
 <device name="0603" package="LED-0603">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="0402" package="LED-0402">
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
 <connect gate="G$1" pin="C" pad="C"/>

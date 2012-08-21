@@ -215,6 +215,14 @@
               <text layer="25" rot="R90" size="0.4064" x="-0.6985" y="-0.889"/>
               <text layer="27" rot="R90" size="0.4064" x="1.0795" y="-1.016"/>
             </package>
+            <package name="LED-0402">
+              <smd dx="0.5" dy="0.5" layer="1" name="C" x="0" y="0.46875"/>
+              <smd dx="0.5" dy="0.5" layer="1" name="A" x="0" y="-0.46875"/>
+              <text layer="25" rot="R90" size="0.4064" x="-0.4365625" y="-0.889"/>
+              <text align="top-left" layer="27" rot="R90" size="0.4064" x="0.4206875" y="-1.016"/>
+              <wire layer="21" width="0.2032" x1="-0.238125" x2="0" y1="-0.079375" y2="0.079375"/>
+              <wire layer="21" width="0.2032" x1="0" x2="0.238125" y1="0.079375" y2="-0.079375"/>
+            </package>
           </packages>
         </library>
       </libraries>
